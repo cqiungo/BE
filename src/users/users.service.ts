@@ -8,10 +8,13 @@ import { hashPassword } from '../helpers/ultil';
 import { log } from 'console';
 import { CreateAuthDto } from '../auth/dto/create-auth.dto';
 import { Todo } from '../todo/schemas/todo.schema';
+import { CreateTodoDto } from 'src/todo/dto/create-todo.dto';
+import { TodoService } from 'src/todo/todo.service';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    private todoService:TodoService
   ) {}
 
   isEmailExist = async (email: string)=> {
@@ -92,16 +95,22 @@ export class UserService {
     }
     return user;
   }
-  async addTodoToUser(userId: string, todo: any) {
-    const user = await this.userModel.findById(userId);
-    if (!user) {
-      throw new Error(`User with id ${userId} not found`);
-    }
-    console.log('Parsed end date:', todo.end);
-    // user.todos.push(todo);
-    // await user.save();
-    // return user;
+  async createTodoForUser(userId: string, dto: CreateTodoDto) {
+    const todo = await this.todoService.create({ ...dto, user: userId });
+
+    const user = await this.userModel.findByIdAndUpdate(userId, {
+      $push: { todos: todo._id },
+    });
+
+    return user;
   }
+  async getUserWithTodos(userId: string) {
+  return this.userModel
+    .findById(userId)
+    .populate('todos') // lấy full object thay vì chỉ id
+    .exec();
+}
+
   async handleRegister(registerDto:CreateAuthDto){
     const {name, email, password} = registerDto;
     const emailExists = await this.isEmailExist(email);

@@ -12,6 +12,7 @@ export class CreateTodoDto {
     @IsBoolean()
     completed?: boolean;  
 
+    user:string
     @IsOptional()
     @IsDate()
     start?: Date;

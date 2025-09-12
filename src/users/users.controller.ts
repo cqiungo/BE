@@ -36,9 +36,10 @@ export class UserController {
     return this.userService.findAll(+query.current, +query.pageSize);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.getUserWithTodos(id);
   }
   
   @Patch(':id')
@@ -60,6 +61,8 @@ export class UserController {
   
   @Post('Todo/:id')
   async addTodoToUser(@Param('id') id: string, @Body() todo: any) {
-    return this.userService.addTodoToUser(id, todo);
+    return this.userService.createTodoForUser(id, todo);
   }
+
+
 }

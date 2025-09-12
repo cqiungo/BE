@@ -18,7 +18,7 @@ export class User extends Document {
         minlength: 6 })
   password: string;
 
-  @Prop()
+  @Prop({required:true})
   name: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Todo' }] })

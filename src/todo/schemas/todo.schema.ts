@@ -18,6 +18,12 @@ export class Todo extends Document {
   user: User;
 
   @Prop()
+  priority: string
+
+  @Prop()
+  category: string
+
+  @Prop()
   image: string;
 
   @Prop({ type: Date, default: Date.now })
