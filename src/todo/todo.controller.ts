@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Public } from '../decorator/customize';
 
 @Controller('todo')
 export class TodoController {
@@ -22,13 +23,17 @@ export class TodoController {
     return this.todoService.findOne(+id);
   }
 
+  @Public()
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+  update(@Param('id') id: string, @Body() updateTodoDto: any) {
+    console.log(updateTodoDto)
+    return this.todoService.update(id, updateTodoDto);
   }
 
+  @Public()
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  remove(@Param('id') id: string,@Body() userid:any) {
+    console.log(userid)
+    return this.todoService.remove(id,userid.id);
   }
 }

@@ -1,7 +1,10 @@
+import { Type } from 'class-transformer';
 import { IsString, IsBoolean, IsOptional, IsDate } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateTodoDto {
     @IsString()
+    @IsOptional()
     title: string;
 
     @IsOptional()
@@ -12,16 +15,26 @@ export class CreateTodoDto {
     @IsBoolean()
     completed?: boolean;  
 
+    @IsOptional()
     user:string
+
     @IsOptional()
-    @IsDate()
+    priority: string
+
+    @IsOptional()
+    category: string
+
+    @IsOptional()
     start?: Date;
+
     @IsOptional()
+    @Type(() => Date)
     @IsDate()
     end?: Date;
+
     @IsOptional()
-    @IsDate()
     actualTime?: Date;
+
     @IsOptional()
     @IsString()
     image?: string;

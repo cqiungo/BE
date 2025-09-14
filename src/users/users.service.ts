@@ -96,13 +96,25 @@ export class UserService {
     return user;
   }
   async createTodoForUser(userId: string, dto: CreateTodoDto) {
+    const {title,description,completed,priority,category,start,end,actualTime,image } = dto
+    const newTodo = {
+      title,
+      description,
+      completed,
+      priority,
+      category,
+      start,
+      end,
+      actualTime,
+      image,
+    }
     const todo = await this.todoService.create({ ...dto, user: userId });
 
-    const user = await this.userModel.findByIdAndUpdate(userId, {
+    const res = await this.userModel.findByIdAndUpdate(userId, {
       $push: { todos: todo._id },
     });
 
-    return user;
+    return res;
   }
   async getUserWithTodos(userId: string) {
   return this.userModel
@@ -110,6 +122,13 @@ export class UserService {
     .populate('todos') // lấy full object thay vì chỉ id
     .exec();
 }
+    async removeTodoFromUser(userId: string, todoId: string) {
+    return this.userModel.findByIdAndUpdate(
+      userId,
+      { $pull: { todos: todoId } }, // xóa todoId ra khỏi mảng
+      { new: true } // trả về user mới sau update
+    );
+  }
 
   async handleRegister(registerDto:CreateAuthDto){
     const {name, email, password} = registerDto;

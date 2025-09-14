@@ -25,10 +25,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     handleRequest(err, user, info,context: ExecutionContext) {
       const request = context.switchToHttp().getRequest();
       const authHeader = request.headers['authorization'];
-      console.log('Authorization Header:', authHeader);
+      console.log(authHeader)
         if (err || !user) {
-          console.error('Error in JwtAuthGuard:', err);
-          console.error('User not found:', user);
           throw err || new UnauthorizedException("Access Token không hợp lệ hoặc không có tại header.");
         }
         return user;

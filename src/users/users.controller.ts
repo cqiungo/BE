@@ -8,6 +8,7 @@ import type { Multer } from 'multer';
 import { UploadService } from '../upload/upload.service';
 import { JwtAuthGuard } from '../auth/passport/jwt-auth.guard';
 import { Public } from '../decorator/customize';
+import { CreateTodoDto } from 'src/todo/dto/create-todo.dto';
 // import { Multer } from 'multer';
 @Controller('user')
 export class UserController {
@@ -38,7 +39,7 @@ export class UserController {
 
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.userService.getUserWithTodos(id);
   }
   
@@ -58,9 +59,18 @@ export class UserController {
     log('Delete User ID:', id);
     return this.userService.remove(id);
   }
-  
-  @Post('Todo/:id')
-  async addTodoToUser(@Param('id') id: string, @Body() todo: any) {
+
+  @Public()
+  @UseInterceptors(FileInterceptor('image'))
+  @Post(':id')
+  async addTodoToUser(@Param('id') id: string, @Body() todo: CreateTodoDto,@UploadedFile() file?: Multer.File) {
+    if(!file) {
+      log('No file uploaded, using default image');
+      todo.image = ''; // Default image URL
+      return this.userService.createTodoForUser(id,todo);
+    }
+    const imageUrl = await this.uploadService.uploadImageToCloudinary(file);
+    todo.image = imageUrl.secure_url;
     return this.userService.createTodoForUser(id, todo);
   }
 
