@@ -26,7 +26,6 @@ export class TodoController {
   @Public()
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTodoDto: any) {
-    console.log(updateTodoDto)
     return this.todoService.update(id, updateTodoDto);
   }
 
