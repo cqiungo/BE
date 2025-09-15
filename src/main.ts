@@ -6,7 +6,7 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
     app.enableCors({
-    origin: true, // Cho phép Next.js truy cập
+    origin: 'https://fe-one-gamma.vercel.app/', // Cho phép Next.js truy cập
     credentials: true, // nếu bạn dùng cookie hoặc session
     allowedHeaders: 'Content-Type,Authorization',
   });
