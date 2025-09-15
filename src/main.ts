@@ -18,8 +18,7 @@ async function bootstrap() {
   }));
 
   app.setGlobalPrefix('',{exclude: ['']});
-  await app.listen(process.env.PORT ?? 3000);
-
+  await app.listen(process.env.PORT as string);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
