@@ -4,9 +4,9 @@ import { ValidationPipe } from '@nestjs/common';
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{ cors: true });
     app.enableCors({
-      origin: 'https://fe-one-gamma.vercel.app', // Cho phép Next.js truy cập
+      origin: true, // Cho phép Next.js truy cập
     credentials: true, // nếu bạn dùng cookie hoặc session
     allowedHeaders: 'Content-Type,Authorization',
   });
