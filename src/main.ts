@@ -16,10 +16,10 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true
   }));
-
+  const port = process.env.PORT as string || 3000
   app.setGlobalPrefix('',{exclude: ['']});
-  await app.listen(process.env.PORT as string ,'0.0.0.0',()=>{
-    console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
+  await app.listen(port,()=>{
+    console.log(`🚀 Server running on http://localhost:${port}`);
   });
   if (module.hot) {
     module.hot.accept();
