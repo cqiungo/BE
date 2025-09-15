@@ -6,7 +6,7 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
     app.enableCors({
-    origin: 'http://localhost:5173', // Cho phép Next.js truy cập
+    origin: true, // Cho phép Next.js truy cập
     credentials: true, // nếu bạn dùng cookie hoặc session
     allowedHeaders: 'Content-Type,Authorization',
   });
@@ -19,7 +19,7 @@ async function bootstrap() {
   const port = process.env.PORT as string || 3000
   app.setGlobalPrefix('',{exclude: ['']});
   await app.listen(port,()=>{
-    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(process.env.MONGODB_URI);
   });
   if (module.hot) {
     module.hot.accept();
