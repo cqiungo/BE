@@ -18,7 +18,7 @@ async function bootstrap() {
   }));
 
   app.setGlobalPrefix('',{exclude: ['']});
-  await app.listen(process.env.PORT as string,'0.0.0.0',()=>{
+  await app.listen(process.env.PORT as string ,'0.0.0.0',()=>{
     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
   });
   if (module.hot) {
